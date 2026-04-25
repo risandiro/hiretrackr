@@ -1,0 +1,92 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<section class="landing">
+    <header class="landing-hero">
+        <p class="landing-kicker">HireTrackr</p>
+        <h1 class="landing-title">Jeden nástroj na přehled, životopisy, motivační dopisy a každou přihlášku zvlášť</h1>
+        <p class="landing-subtitle">
+            HireTrackr propojuje dashboard s metrikami, „CV dílnu“ s verzemi a AI zpětnou vazbou,
+            chytrou přípravu motivačních dopisů a detailní evidenci žádostí včetně toho, co jsi komu opravdu poslal.
+            Cílem je méně chaosu, lepší rozhodování a klidnější job search.
+        </p>
+    </header>
+
+    <div class="landing-grid">
+        <article class="landing-card landing-card--wide">
+            <h2>Co HireTrackr dělá</h2>
+            <p>
+                Spojuje přehled o celém hledání práce s prací na materiálech a s konkrétní historií u každé firmy.
+                U žádostí víš nejen stav, ale i kterou verzi CV a motivačního dopisu jsi odeslal; u životopisu a dopisu
+                máš skupiny, verze a nástroje (včetně AI), které ti pomohou je vyladit pro různé typy rolí.
+            </p>
+        </article>
+
+        <article class="landing-card landing-card--half">
+            <h2>Přehled</h2>
+            <p>
+                Obecný pohled na celý proces: souhrnné metriky, grafy a <strong>success rate</strong> napříč žádostmi,
+                plus celkový stav pipeline (rozpracované, čekající, interview, odmítnuté a podobně).
+                Slouží jako řídicí panel — rychle uvidíš, kde má smysl přidat úsilí a kde už jen čekáš na výsledek.
+            </p>
+        </article>
+
+        <article class="landing-card landing-card--half">
+            <h2>Žádosti</h2>
+            <p>
+                Přidáváš jednotlivé přihlášky a u každé si ukládáš kontext: firma, role, poznámky, odkaz na inzerát
+                a <strong>stav v reálném čase</strong> (např. podáno, interview, odmítnuto).
+                Ke každé žádosti můžeš nahrát nebo přiřadit <strong>CV a motivační list</strong> — vybereš konkrétní verzi
+                z materiálů připravených v CV dílně a v sekci motivačního dopisu, takže se nestane, že bys si nepamatoval,
+                komu jsi co poslal.
+            </p>
+        </article>
+
+        <article class="landing-card landing-card--full">
+            <h2>CV dílna</h2>
+            <p>
+                Nahráváš a organizuješ <strong>více typů životopisů ve skupinách</strong> — např. podle směru nebo seniority —
+                a připravuješ <strong>tailorované varianty pro různé pozice</strong>.
+                U každé kategorie systém <strong>uchovává předchozí verze</strong>, takže se můžeš vracet k dřívějším variantám
+                nebo je porovnávat.
+            </p>
+            <p>
+                AI umí životopis <strong>vyhodnotit</strong>: dá celkové skóre, navrhne, co vylepšit, co zkrátit nebo smazat
+                a co doplnit, aby byl silnější vůči typu role, na kterou míříš.
+            </p>
+        </article>
+
+        <article class="landing-card landing-card--wide landing-card--full">
+            <h2>Motivační dopis</h2>
+            <p>
+                AI ti pomůže napsat dopis <strong>šitý na konkrétní nabídku</strong>: můžeš zadat <strong>URL</strong>,
+                nechat si vygenerovat text z <strong>obecného popisu práce</strong>, nebo nechat systém <strong>natáhnout text ze stránky</strong>
+                a AI ho zpracuje do přesvědčivého motivačního listu.
+                Stejně jako u CV podporuješ <strong>skupiny a verze</strong> pro různé firmy a typy rolí — vždycky víš,
+                která varianta patří kam, a můžeš iterovat, dokud nepůsobí přesně tak, jak potřebuješ.
+            </p>
+        </article>
+
+        <article class="landing-card landing-card--wide">
+            <h2>Jak to celé zapadá dohromady</h2>
+            <p>
+                HireTrackr je webová aplikace s přihlášením a bezpečným uložením dat: přehled ukazuje trend a výkon,
+                CV dílna a motivační dopisy drží strukturu a historii verzí, žádosti svazují materiály s konkrétními firmami
+                a hlídají i životnost odkazů. AI je tam tam, kde zrychlí práci s textem a zpětnou vazbou — základ zůstává
+                pořádek, důkazy o tom, co jsi poslal, a jasný stav každé přihlášky.
+            </p>
+            <ul class="landing-list">
+                <li>dashboard s grafy, success rate a stavem všech žádostí</li>
+                <li>žádosti s výběrem odeslané verze CV a dopisu + polling URL inzerátu</li>
+                <li>CV dílna se skupinami, verzemi a AI hodnocením + doporučeními</li>
+                <li>motivační dopisy na míru nabídce (URL / popis / stažený obsah) s verzemi a skupinami</li>
+            </ul>
+        </article>
+    </div>
+
+    <p class="landing-footer">
+        Ještě nemáš účet? Začni registrací. Už jsi uvnitř? Přihlas se a pokračuj od přehledu nebo rovnou u žádostí.
+    </p>
+</section>
+
+{% endblock %}

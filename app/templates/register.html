@@ -1,0 +1,113 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="auth-stack">
+    <div class="auth-header">
+        <h1>Registrace</h1>
+        <p>Vytvoř si účet a začni spravovat své žádosti.</p>
+    </div>
+
+    <div class="auth-form-box">
+        <form method="post" action="/register">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            
+            <label for="full_name">Jméno a příjmení</label><br>
+            <input type="text" id="full_name" name="full_name" placeholder="Jan Novák" autocomplete="name" required><br><br>
+
+            <label for="email">E-mail</label><br>
+            <input
+                type="email"
+                id="email"
+                name="email"
+                maxlength="254"
+                inputmode="email"
+                placeholder="tvuj@email.cz"
+                title="Zadej platný e-mail (např. jmeno@domena.cz)."
+                autocomplete="email"
+                required
+            ><br><br>
+
+            <label for="password">Heslo</label><br>
+            <input
+                type="password"
+                id="password"
+                name="password"
+                minlength="8"
+                maxlength="48"
+                pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}"
+                title="Minimálně 8 znaků: malé + velké písmeno + číslo."
+                autocomplete="new-password"
+                required
+            >
+            <p class="field-hint">
+                Minimálně 8 znaků, obsahuje <strong>malé</strong> i <strong>velké</strong> písmeno a <strong>číslici</strong>.
+            </p>
+
+            <label for="password_confirm">Potvrzení hesla</label><br>
+            <input
+                type="password"
+                id="password_confirm"
+                name="password_confirm"
+                minlength="8"
+                maxlength="48"
+                autocomplete="new-password"
+                required
+            ><br><br>
+
+            <label>
+                <input type="checkbox" name="terms" required>
+                Souhlasím s podmínkami a se zpracováním osobních údajů
+            </label><br><br>
+
+            <button type="submit">Vytvořit účet</button>
+        </form>
+    </div>
+
+    <div class="auth-footer">
+    Už máš účet? <a href="/login">Přihlas se</a>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+    {% if request.query_params.get("error") == "email_exists" %}
+        <script>
+            showToast("Tento email je už zaregistrovaný.", "error");
+        </script>
+    {% elif request.query_params.get("error") == "invalid_email" %}
+        <script>
+            showToast("Zadej platný e-mail.", "error");
+        </script>
+    {% elif request.query_params.get("error") == "invalid_name" %}
+        <script>
+            showToast("Zadej jméno a příjmení.", "error");
+        </script>
+    {% elif request.query_params.get("error") == "password_mismatch" %}
+        <script>
+            showToast("Hesla se neshodují.", "error");
+        </script>
+    {% elif request.query_params.get("error") == "weak_password" %}
+        <script>
+            showToast("Heslo je příliš slabé. Min. 8 znaků, velké + malé písmeno a číslo.", "error");
+        </script>
+    {% endif %}
+
+    <script>
+        const p1 = document.getElementById("password");
+        const p2 = document.getElementById("password_confirm");
+        function validateMatch() {
+            if (!p2.value) {
+                p2.setCustomValidity("");
+                return;
+            }
+            if (p1.value !== p2.value) {
+                p2.setCustomValidity("Hesla se neshodují.");
+            } else {
+                p2.setCustomValidity("");
+            }
+        }
+        p1.addEventListener("input", validateMatch);
+        p2.addEventListener("input", validateMatch);
+    </script>
+{% endblock %}

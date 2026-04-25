@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="auth-stack verify-pending-main">
+    <div class="auth-header">
+        <h1>Potvrďte svůj e-mail</h1>
+        <p class="verify-pending-note">
+            Ověřovací odkaz jsme poslali na:
+        </p>
+        <span class="verify-pending-email">
+            {{ pending_email or "váš e-mail" }}
+        </span>
+        <p class="verify-pending-help">
+            Zkontrolujte Doručenou poštu, Hromadné i Spam.
+            Pokud e-mail nedorazil, můžete ho poslat znovu.
+        </p>
+    </div>
+    <div class="auth-form-box">
+        <form method="post" action="/resend-verification">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <div class="verify-pending-actions">
+                <button type="submit">Poslat ověřovací e-mail znovu</button>
+                <a href="/login">Už mám ověřeno, chci se přihlásit</a>
+            </div>
+        </form>
+    </div>
+    <div class="auth-footer">
+        Potřebujete upravit e-mail? <a href="/register">Vytvořit účet znovu</a>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+    {% if request.query_params.get("sent") == "1" %}
+        <script>
+            showToast("Ověřovací e-mail byl odeslán.", "success");
+        </script>
+    {% elif request.query_params.get("error") == "resend_too_soon" %}
+        <script>
+            showToast("Zkuste to prosím znovu za chvíli.", "error");
+        </script>
+    {% endif %}
+{% endblock %}
