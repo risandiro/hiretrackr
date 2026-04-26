@@ -68,7 +68,21 @@
                                         {% for v in versions %}
                                             <tr>
                                                 <td>v{{ v.version_number }}</td>
-                                                <td>{{ v.filename_original }}</td>
+                                                <td>
+                                                    {{ v.filename_original }}
+                                                    <a
+                                                        href="/cv_dilna/version/download/{{ v.id }}"
+                                                        class="cv-download-link"
+                                                        title="Stáhnout"
+                                                        aria-label="Stáhnout soubor"
+                                                    >
+                                                        <svg width="14" height="14" viewbox="0 0 24 24" fill="none" aria-hidden="true">
+                                                            <path d="M12 4v10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                                                            <path d="M8.5 11.5 12 15l3.5-3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                                                            <path d="M5 18h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                                                        </svg>
+                                                    </a>
+                                                </td>
                                                 <td>{{ v.uploaded_at.strftime("%d.%m.%Y %H:%M") if v.uploaded_at else "-" }}</td>
                                                 <td class="cv-actions-cell">
                                                     <span class="cv-actions-links">

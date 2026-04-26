@@ -42,14 +42,27 @@ def delete_cv_file(object_key: str) -> None:
     )
 
 # Vygeneruje dočasný URL pre čítanie objektu z R2
-def get_cv_presigned_url(object_key: str, expires_in: int = 300) -> str:
+def get_cv_presigned_url(
+    object_key: str,
+    expires_in: int = 300,
+    response_content_disposition: str | None = None,
+    response_content_type: str | None = None,
+) -> str:
+    
     if not object_key:
         raise ValueError("object_key is required")
+    
+    params = {
+        "Bucket": R2_BUCKET,
+        "Key": object_key,
+    }
+
+    if response_content_disposition:
+        params["ResponseContentDisposition"] = response_content_disposition
+    if response_content_type:
+        params["ResponseContentType"] = response_content_type
     return s3.generate_presigned_url(
         ClientMethod="get_object",
-        Params={
-            "Bucket": R2_BUCKET,
-            "Key": object_key,
-        },
+        Params=params,
         ExpiresIn=expires_in,
     )

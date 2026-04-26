@@ -1,4 +1,5 @@
 from io import BytesIO
+from urllib.parse import quote
 
 from fastapi import APIRouter, Request, UploadFile, File, Form, Depends, HTTPException
 from fastapi.responses import RedirectResponse
@@ -212,7 +213,7 @@ def cv_version_preview(version_id: int, request: Request, db: Session = Depends(
     if not user_id:
         return RedirectResponse("/login", status_code=303)
     
-    #Autorizácia vlastníctva verzie (version -> group -> user)
+    # Autorizácia vlastníctva verzie (version -> group -> user)
     version = (
         db.query(CVVersion)
         .join(CVGroup, CVGroup.id == CVVersion.group_id)
@@ -229,3 +230,52 @@ def cv_version_preview(version_id: int, request: Request, db: Session = Depends(
     preview_url = get_cv_presigned_url(version.storage_path)
     
     return RedirectResponse(url=preview_url, status_code=302)
+
+
+@router.get("/cv_dilna/version/download/{version_id}", name="cv_version_download")
+def cv_version_download(
+    version_id: int,
+    request: Request,
+    db: Session = Depends(get_db),
+):
+    
+    # # Získaj uživatela, skontroluj či je prihlásený
+    user_id = request.session.get("user_id")
+    if not user_id:
+        return RedirectResponse(url="/login", status_code=303)
+    
+    # Autorizácia vlastníctva verzie (version -> group -> user)
+    version = (
+        db.query(CVVersion)
+        .join(CVGroup, CVGroup.id == CVVersion.group_id)
+        .filter(
+            CVVersion.id == version_id,
+            CVGroup.user_id == user_id,
+        )
+        .first()
+    )
+
+    if not version:
+        return RedirectResponse(url="/cv_dilna?error=file_unavailable", status_code=303)
+    
+    # Názov súboru
+    download_name = (version.filename_original or "cv").replace("\n", " ").replace("\r", " ").strip()
+    if not download_name:
+        download_name = "cv"
+
+    # Zformátuj na UTF-8
+    content_disposition = f"attachment; filename*=UTF-8''{quote(download_name)}"
+
+    # Vytvor url a redirekt
+    try:
+        download_url = get_cv_presigned_url(
+            version.storage_path,
+            expires_in=300,  # 5 min
+            response_content_disposition=content_disposition,
+            response_content_type=version.mime_type or "application/octet-stream",
+        )
+
+    except (ClientError, BotoCoreError, ValueError):
+        return RedirectResponse(url="/cv_dilna?error=download_failed", status_code=303)
+    
+    return RedirectResponse(url=download_url, status_code=302)

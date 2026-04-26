@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+
+    <section class="pdf-convert-page">
+        <div class="pdf-convert-card">
+            <h3>Konverze do PDF</h3>
+            <p class="pdf-convert-hint">Podporované formáty: PDF, DOC, DOCX</p>
+                <form
+                    method="post"
+                    action="/konverze_na_pdf/convert"
+                    enctype="multipart/form-data"
+                    class="pdf-convert-form"
+                >
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <label for="convert_file">Vyberte soubor</label>
+                    <input
+                        id="convert_file"
+                        name="convert_file"
+                        type="file"
+                        accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                        required
+                    >
+                    <button type="submit" class="pdf-convert-btn">Převést do PDF</button>
+                </form>
+        </div>
+</section>
+
+{% endblock %}
