@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 
 from ..deps import get_db, render_template
-from ..models import User
+from ..models import User, CVGroup
 
 from ..services.csrf_service import validate_csrf
 from ..services.token_service import create_email_verification_token, verify_email_verification_token
@@ -75,6 +75,12 @@ def register_submit(
         db.commit()
         db.refresh(user)
 
+        # vytvor defaultnú CV skupinu pre nového používateľa
+        default_group = CVGroup(user_id=user.id, name="Hlavní skupina")
+        db.add(default_group)
+        db.commit()
+        db.refresh(default_group)
+
         token = create_email_verification_token(user.id, user.email)
         verify_link = build_verify_link(token)
         subject, text_body, html_body = build_verify_email_content(verify_link)
@@ -89,6 +95,7 @@ def register_submit(
 
         user.verification_sent_at = datetime.now(timezone.utc)
         db.commit()
+        
     except IntegrityError:
         db.rollback()
         return RedirectResponse(url="/register?error=email_exists", status_code=303)

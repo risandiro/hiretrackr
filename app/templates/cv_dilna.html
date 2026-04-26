@@ -3,9 +3,155 @@
 {% block content %}
     {% if request.session.get("user_id") %}
         
+        <div class="cv-dilna-page">
+            <div class="cv-content-wrap">
 
+                <!-- Sub-nav -->
+                <div class="cv-subnav-wrap">
+                    <nav class="cv-subnav" aria-label="CV skupiny">
+                        <div class="cv-subnav-left">
+                            <button class="cv-group-item is-active" type="button">Hlavní skupina</button>
+                        </div>
+                        <div class="cv-subnav-right">
+                            <button class="cv-add-group-btn" type="button">+ Přidat</button>
+                        </div>
+                    </nav>
+                </div>
+
+                <!-- Top row: upload + history -->
+                <section class="cv-top-row">
+
+                    <!-- Left -->
+                    <div>
+                        <div class="cv-upload-box">
+                            <h3>Nahrát nový životopis</h3>
+                            <p class="cv-upload-hint">Podporované formáty: PDF, DOCX</p>
+
+                            <form method="post" action="/cv_dilna/upload" enctype="multipart/form-data" class="cv-upload-form">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                                <input type="hidden" name="group_id" value="{{ active_group.id }}">
+                                <input id="cv_file" name="cv_file" type="file" accept=".pdf,.doc,.docx" required>
+                                <button type="submit" class="cv-upload-btn">Nahrát</button>
+                            </form>
+                        </div>
+
+                        <div class="cv-preview-box">
+                            <h3>Náhled životopisu</h3>
+                            <div class="cv-preview-frame-wrap">
+                                <iframe
+                                    id="cvPreviewFrame"
+                                    name="cvPreviewFrame"
+                                    class="cv-preview-frame"
+                                    title="Náhled CV"
+                                ></iframe>
+                            </div>
+                            <p id="cvPreviewHint" class="cv-preview-hint">
+                                Náhled se zobrazí po kliknutí na „Zobrazit“ v tabulce verzí.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Right -->
+                    <div class="cv-history-box">
+                        <div class="cv-table-wrap">
+                            <table class="cv-history-table">
+                                <thead>
+                                    <tr>
+                                        <th>Verze</th>
+                                        <th>Název souboru</th>
+                                        <th>Datum nahrání</th>
+                                        <th>Akce</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if versions %}
+                                        {% for v in versions %}
+                                            <tr>
+                                                <td>v{{ v.version_number }}</td>
+                                                <td>{{ v.filename_original }}</td>
+                                                <td>{{ v.uploaded_at.strftime("%d.%m.%Y %H:%M") if v.uploaded_at else "-" }}</td>
+                                                <td class="cv-actions-cell">
+                                                    <span class="cv-actions-links">
+                                                        {% set is_pdf = (v.mime_type == "application/pdf") or (v.filename_original and v.filename_original.lower().endswith(".pdf")) %}
+                                                        {% if is_pdf %}
+                                                            <a href="/cv_dilna/version/preview/{{ v.id }}" target="cvPreviewFrame">Zobrazit</a>
+                                                        {% else %}
+                                                            <span class="cv-link-disabled" title="Náhled je dostupný pouze pro PDF">Zobrazit</span>
+                                                        {% endif %}
+                                                    </span>
+
+                                                    <form method="post" action="/cv_dilna/version/delete" class="cv-delete-form">
+                                                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                                                        <input type="hidden" name="version_id" value="{{ v.id }}">
+                                                        <button type="submit" class="cv-delete-btn" aria-label="Smazat verzi" title="Smazat verzi" onclick="return confirm('Opravdu chcete verzi smazat?');">
+                                                            <svg width="14" height="14" viewbox="0 0 24 24" fill="none" aria-hidden="true">
+                                                                <path d="M9 3h6l1 2h4v2H4V5h4l1-2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                                                                <path d="M6 9h12v10a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                                                                <path d="M10 12v6M14 12v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                                                            </svg>
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                        <td colspan="4" class="cv-empty-row">
+                                            Zatím nejsou dostupné žádné předchozí verze.
+                                        </td>
+                                        </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Bottom row: score + insights -->
+                <section class="cv-bottom-row">
+                    <div class="cv-score-box">
+                        <h3>Skóre životopisu</h3>
+                        <div class="cv-score-grid">
+                            <div class="cv-score-card">
+                                <div class="cv-score-label">Celkové skóre</div>
+                                <div class="cv-score-value">--</div>
+                            </div>
+                        <div class="cv-score-card">
+                            <div class="cv-score-label">Struktura</div>
+                            <div class="cv-score-value">--</div>
+                        </div>
+                        <div class="cv-score-card">
+                            <div class="cv-score-label">Relevantnost</div>
+                            <div class="cv-score-value">--</div>
+                        </div>
+                        <div class="cv-score-card">
+                            <div class="cv-score-label">Klíčová slova</div>
+                            <div class="cv-score-value">--</div>
+                        </div>
+                        </div>
+                    </div>
+
+                    <div class="cv-insights-grid">
+                        <div class="cv-insights-box">
+                            <h3>Co zlepšit</h3>
+                            <ul class="cv-list">
+                                <li>Zatím nejsou dostupná doporučení.</li>
+                            </ul>
+                        </div>
+
+                        <div class="cv-insights-box">
+                            <h3>Co změnit / odstranit</h3>
+                            <ul class="cv-list">
+                                <li>Zatím nejsou dostupná doporučení.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
 
     {% else %}
+
         <section class="gate-page">
             <div class="gate-card">
                 <div class="gate-icon" aria-hidden="true">🔒</div>
@@ -20,5 +166,37 @@
                 </div>
             </div>
         </section>
+
     {% endif %}
+{% endblock %}
+
+{% block scripts %}
+
+    {{ super() }}
+        {% if request.session.get("user_id") %}
+            <script src="{{ url_for('static', path='js/pages/cv_dilna.js') }}" defer></script>
+        {% endif %}
+
+    {% if request.query_params.get("error") == "invalid_file_type" %}
+        <script>
+            showToast("Neplatný typ souboru. Nahrajte prosím PDF, DOC nebo DOCX.", "error");
+        </script>
+    {% elif request.query_params.get("error") == "empty_file" %}
+        <script>
+            showToast("Soubor je prázdný.", "error");
+        </script>
+    {% elif request.query_params.get("error") == "file_too_large" %}
+        <script>
+            showToast("Soubor je příliš velký. Maximální velikost je 10 MB.", "error");
+        </script>
+    {% elif request.query_params.get("error") == "db_save_failed" %}
+        <script>
+            showToast("Verzi se nepodařilo uložit. Zkuste to prosím znovu.", "error");
+        </script>
+    {% elif request.query_params.get("uploaded") == "1" %}
+        <script>
+            showToast("Životopis byl úspěšně nahrán.", "success");
+        </script>
+    {% endif %}
+
 {% endblock %}

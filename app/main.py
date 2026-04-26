@@ -9,6 +9,7 @@ from starlette.middleware.sessions import SessionMiddleware
 from .deps import init_templates
 from .routers.auth import router as auth_router
 from .routers.pages import router as pages_router
+from .routers.cv_dilna import router as cv_dilna_router
 
 app = FastAPI()
 
@@ -28,3 +29,5 @@ app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="stat
 
 app.include_router(pages_router)
 app.include_router(auth_router)
+app.include_router(cv_dilna_router)
+

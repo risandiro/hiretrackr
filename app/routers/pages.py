@@ -15,10 +15,6 @@ def prehled(request: Request):
 def zadosti(request: Request):
      return render_template(request, "zadosti.html")
 
-@router.get("/cv_dilna")
-def cv_dilna(request: Request):
-     return render_template(request, "cv_dilna.html")
-
 @router.get("/motivacni_dopis")
 def motivacni_dopis(request: Request):
      return render_template(request, "motivacni_dopis.html")
