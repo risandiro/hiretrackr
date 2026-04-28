@@ -61,7 +61,7 @@ This project is still in progress and not finished yet.
 - Run migrations: docker compose exec api alembic upgrade head
 - Open app: http://localhost:8000
 
-## External services (free tier examples)
+## External services (free tier / low-cost examples)
 
 - **File storage:** [Cloudflare R2](https://developers.cloudflare.com/r2/)
 - **DNS:** [Cloudflare DNS](https://developers.cloudflare.com/dns/)
