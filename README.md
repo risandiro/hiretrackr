@@ -64,6 +64,7 @@ This project is still in progress and not finished yet.
 ## External services (free tier examples)
 
 - **File storage:** [Cloudflare R2](https://developers.cloudflare.com/r2/)
+- **DNS:** [Cloudflare DNS](https://developers.cloudflare.com/dns/)
 - **SMTP:** [Resend](https://resend.com/docs/send-with-smtp)
 
 ## Project structure
