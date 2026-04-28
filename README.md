@@ -69,3 +69,12 @@ This project is still in progress and not finished yet.
 ├── docker-compose.yml
 ├── requirements.txt
 └── .env.example
+
+## How to run
+
+Clone the repo: git clone https://github.com/risandiro/hiretrackr.git && cd hiretrackr
+Copy env file: cp .env.example .env
+Fill values in .env (DB, SMTP, R2, secrets)
+Start app: docker compose up --build
+Run migrations: docker compose exec api alembic upgrade head
+Open app: http://localhost:8000
