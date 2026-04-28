@@ -1,0 +1,71 @@
+# HireTrackr
+
+Web app for job search: tracking job applications, CV and motivation-letter tools, overview, and data collection from sent applications, with AI-based recommendations.
+
+I'm building this project while learning full-stack basics with FastAPI + PostgreSQL.
+
+## Project status
+This project is still in progress and not finished yet.
+
+## What it does
+
+- User registration and login
+- Input validation with toast messages
+- Email verification
+- CSRF protection
+- CV workshop page (`CV Dílna`)
+  - upload CV versions
+  - preview PDF versions
+  - delete versions
+  - download versions
+- Convert files to PDF (DOC/DOCX)
+
+## Planned features
+
+- **Dashboard insights**
+  - Overall application progress
+  - Follow-up rate, interview rate
+- **CV tools**
+  - CV scoring + recommendations (neural-network based)
+  - CV groups for different job types / tailored versions
+- **Motivation letter helper**
+  - Job-posting URL scraper
+  - Generate tailored motivation letter from posting details
+- **Job tracking**
+  - Central job-application database (what was sent, where, and when)
+  - Real-time status tracking for each job offer
+  - Company scoring based on collected review data (neural-network based)
+- **Interview planning**
+  - Notification schedules and reminders for upcoming interviews
+- **Engineering improvements**
+  - More automated tests
+  - Better CI pipeline
+
+## Tech stack
+
+- **Language:** Python
+- **Backend:** FastAPI
+- **Templates:** Jinja2
+- **Frontend:** HTML, CSS, JavaScript
+- **Database:** PostgreSQL + SQLAlchemy + Alembic
+- **Storage:** Cloudflare R2 (S3 API)
+- **Containerization:** Docker + Docker Compose
+- **Database tools:** pgAdmin (Docker service, optional)
+
+## Project structure
+
+```bash
+.
+├── app/
+│   ├── routers/        # FastAPI endpoint handlers and backend logic for each route
+│   ├── services/       # business and security services
+│   ├── templates/      # Jinja HTML templates
+│   ├── static/         # static files (CSS, JS)
+│   ├── models.py       # SQLAlchemy models
+│   ├── deps.py         # shared dependencies
+│   └── main.py         # app bootstrap, middleware, static mount, router includes
+├── alembic/            # DB migrations
+├── Dockerfile
+├── docker-compose.yml
+├── requirements.txt
+└── .env.example
