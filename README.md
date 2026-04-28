@@ -61,6 +61,11 @@ This project is still in progress and not finished yet.
 - Run migrations: docker compose exec api alembic upgrade head
 - Open app: http://localhost:8000
 
+## External services (free tier examples)
+
+- **File storage:** [Cloudflare R2](https://developers.cloudflare.com/r2/)
+- **SMTP:** [Resend](https://resend.com/docs/send-with-smtp)
+
 ## Project structure
 
 ```bash
